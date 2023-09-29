@@ -1,71 +1,107 @@
-# Gomoku Web Application
+Certainly! Below is a sample `README.md` file that outlines how to set up and run your Gomoku game.
 
-## Background
+---
 
-This project is a web-based version of the classic board game Gomoku, also known as Five in a Row. The application is developed using React and TypeScript and offers an interactive and intuitive user interface. Players can compete to get five stones in a row, either horizontally, vertically, or diagonally.
+# Gomoku Game
 
-## Getting Started
+Gomoku is an abstract strategy board game. This project provides both the front-end and back-end code for running the game in a web browser.
 
-### Prerequisites
+## Table of Contents
 
-- Make sure you have Node.js and npm installed on your machine. If not, you can download and install them from the [official Node.js website](https://nodejs.org/en/download/).
-- The project uses TypeScript, which comes pre-configured in the setup.
+- [Gomoku Game](#gomoku-game)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+    - [Backend Installation](#backend-installation)
+    - [Frontend Installation](#frontend-installation)
+  - [Configuration](#configuration)
+    - [Backend Configuration](#backend-configuration)
+    - [Frontend Configuration](#frontend-configuration)
+  - [Running the App](#running-the-app)
+  - [Technologies Used](#technologies-used)
 
-### Setup
+## Installation
 
-1. Clone the repository to your local machine.
+To get started, you'll need to clone the repository to your local machine.
 
 ```bash
-git clone https://github.com/frenchafgan/Assignment_2_gomoku.git
+git clone https://github.com/frenchafgan/Assignment_2_gomoku-functional.git
 ```
 
-2. Navigate to the project directory.
+After cloning, navigate to the project directory:
 
 ```bash
-cd Assignment_2_gomoku
+cd Assignment_2_gomoku-functional
 ```
 
-3. Install the required dependencies.
+### Backend Installation
+
+First, navigate to the backend directory:
+
+```bash
+cd backend
+```
+
+Install the necessary packages:
 
 ```bash
 npm install
 ```
 
-### Running the Application
+### Frontend Installation
 
-To start the application, run the following command in the terminal:
+Navigate to the frontend directory:
+
+```bash
+cd Assignment_2_gomoku-functional
+```
+
+Install the necessary packages:
+
+```bash
+npm install
+```
+
+## Configuration
+
+### Backend Configuration
+
+Create a `.env` file in the `backend` directory and add your MongoDB URI:
+
+```env
+MONGO_DB_URL=your_mongodb_uri_here
+```
+
+Replace `your_mongodb_uri_here` with your actual MongoDB URI.
+
+### Frontend Configuration
+
+If needed, you can also create a `.env` file in the `Assignment_2_gomoku-functional` directory for any front-end environment variables you may have.
+
+## Running the App
+
+Open a new terminal and navigate to the `Assignment_2_gomoku-functional` directory:
+
+```bash
+cd Assignment_2_gomoku-functional
+```
+
+Run the frontend:
 
 ```bash
 npm start
 ```
 
-This will start the development server, and the application should open automatically in your web browser. If it doesn't, you can access it manually by going to `http://localhost:3000/`.
+Using Concurrently, we have set start script to trigger two start scripts (backend and front end) at the same time. 
 
-## Game Rules
+The frontend should now be running at [http://localhost:3000](http://localhost:3000).
 
-- Players take turns placing a stone of their chosen color on a cell of the grid.
-- The objective is to line up five stones of your color in a row, column, or diagonal.
-- The game ends when one of the players achieves this objective or when the grid is full, resulting in a draw.
+## Technologies Used
 
-## Features
+- React.js for the Frontend
+- Node.js and Express.js for the Backend
+- MongoDB for the Database
+- Redux for State Management
 
-- **Interactive Board**: Click to place stones and see the board update in real-time.
-- **Game History**: View a log of past games, complete with move history and winners.
-- **Scoreboard**: Keep track of wins and losses for an added layer of competition.
-- **Dynamic Board Size**: Choose from multiple board sizes for varied levels of difficulty.
+---
 
-## Dependencies
-
-The project uses several npm packages to aid development:
-
-- `react` and `react-dom` for building the UI.
-- `react-redux` for state management.
-- `react-router-dom` for client-side routing.
-- `redux` for a predictable state container.
-- `typescript` for static type checking.
-
-Run `npm install` in at the location where the package.json file is located to install all the required dependencies.
-
-## Bonus Feature
-
-In the spirit of sportsmanship and friendship, the application allows players to logout after their session so that another player can log in and play also without affecting the game history of other players. This is achieved by storing the game history in the browser's local storage, which persists even after the user logs out.
+You can now open your web browser and navigate to `http://localhost:3000` to start playing the Gomoku game!
