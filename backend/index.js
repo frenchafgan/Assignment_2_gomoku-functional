@@ -1,26 +1,31 @@
+// Load packages and modules
 const express = require('express');
-const app = express();
-const PORT = 3001;
+const mongoose = require('mongoose');
+const cors = require('cors');
+require('dotenv').config(); // Load environment variables
+
+// Import custom modules
 const authRoutes = require('./routes/auth');
 const gameRoutes = require('./routes/game');
 const authorize = require('./middleware/middleware');
-const mongoose = require('mongoose');
-const Game = require('./models/Game');
 
-// Enable CORS for all routes
-const cors = require('cors');
+// Constants and Variables
+const app = express();
+const PORT = 3001;
 
 const corsOptions = {
   origin: 'http://localhost:3000',
   credentials: true,
 };
 
+// Middleware Setup
 app.use(cors(corsOptions));
+app.use(express.json()); // Middleware for parsing JSON
 
-// Middleware for parsing JSON
-app.use(express.json());
+// MongoDB Setup
+const MONGO_DB_URL = process.env.MONGO_DB_URL;
 
-// Connect to MongoDB
+// MongoDB Connection
 mongoose
   .connect(
     'mongodb+srv://dbuser:Ilovecake123@gomoku.cjr0axx.mongodb.net/?retryWrites=true&w=majority',
@@ -29,15 +34,12 @@ mongoose
       useUnifiedTopology: true,
     }
   )
-  .then(async () => {
-    // Mark this function as async
+  .then(() => {
     console.log('Connected to MongoDB');
 
-    // Use auth routes
-    app.use('/auth', authRoutes);
-
-    // Use game routes
-    app.use('/game', gameRoutes); // Register gameRoutes
+    // Route Setup
+    app.use('/auth', authRoutes); // Authentication routes
+    app.use('/game', gameRoutes); // Game routes
 
     // Example protected route
     app.get('/protected', authorize, (req, res) => {
@@ -50,11 +52,11 @@ mongoose
       res.status(500).send('Something broke!');
     });
 
-    // Start the server
-    app.listen(3001, () => {
+    // Start Express Server
+    app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   })
   .catch((err) => {
-    console.error('Could not connect to MongoDB', err);
+    console.error('Could not connect to MongoDB:', err);
   });
