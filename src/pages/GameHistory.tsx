@@ -33,7 +33,7 @@ export const GameHistory: React.FC = () => {
           <GameHistoryRow 
             key={index+1}    
             id={index+1}
-            dateAndTime={new Date(game.date)}
+            dateAndTime={game.date}
             winner={game.winner}
           />
         ))}
