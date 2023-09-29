@@ -4,15 +4,17 @@ import { RootState } from '../redux/store';
 import {logout} from '../redux/auth/authSlice';
 import '../styles/Header.css';
 import { AppDispatch } from '../redux/store';
+import { useNavigate } from 'react-router-dom';
    
 
 const Header: React.FC = () => {
-    
+    const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
     const handleLogout = () => {
         dispatch(logout()); // Dispatch logout action
+        navigate('/login'); // Navigate to login page
       }
     
 

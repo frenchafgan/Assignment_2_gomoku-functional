@@ -38,8 +38,9 @@ router.post('/create', authorize, async (req, res) => {
   });
 
   try {
-    await newGame.save();
-    res.status(201).send('Game created');
+    let bob = await newGame.save();
+    console.log(bob);
+    res.status(201).send(JSON.stringify(bob));
   } catch (error) {
     console.error(`An error occurred while saving game: ${error}`);
     res.status(500).send('Internal Server Error');
@@ -49,13 +50,20 @@ router.post('/create', authorize, async (req, res) => {
 // Update a game
 router.put('/update/:gameId', authorize, async (req, res) => {
   // Added authorize middleware
+  let blob = JSON.parse(res.body);
+  gameId = blob._id;
+  boardSize = blob.boardSize;
+  date = blob.date;
+  moves = blob.moves;
+  result = blob.result;
+  username = blob.username;
   const { gameId } = req.params;
   const { boardSize, date, moves, result, username } = req.body;
 
   // Find and update the game in MongoDB
   const updatedGame = await Game.findOneAndUpdate(
     { id: gameId }, // Search by game ID
-    { boardSize, date, moves, result, username }, // Fields to update
+    { boardSize, date, moves, result, username },
     { new: true } // Return the updated document
   );
 
@@ -70,7 +78,7 @@ router.put('/update/:gameId', authorize, async (req, res) => {
 router.get('/:gameId', authorize, async (req, res) => {
   const { gameId } = req.params;
   const game = await Game.findOne({ id: gameId });
-  if (game) {
+  if (gameId) {
     res.status(200).json(game);
   } else {
     res.status(404).send('Game not found');

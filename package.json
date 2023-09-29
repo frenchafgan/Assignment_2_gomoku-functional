@@ -14,6 +14,7 @@
     "@types/react-dom": "^18.2.7",
     "axios": "^1.5.0",
     "cors": "^2.8.5",
+    "jsonwebtoken": "^9.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.2",
@@ -51,8 +52,8 @@
     ]
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.3",
     "@types/uuid": "^9.0.4",
     "concurrently": "^8.2.1"
-    
   }
 }

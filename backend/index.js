@@ -44,12 +44,6 @@ mongoose
       res.send('This is a protected route');
     });
 
-    // Fetch all games
-    app.get('/games', async (req, res) => {
-      // Mark this function as async
-      res.status(200).json(games);
-    });
-
     // Global error-handling middleware (optional)
     app.use((err, req, res, next) => {
       console.error(err.stack);

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
-import { createGame, updateGame, makeMove, restartGame, updateGamesList } from '../redux/game/gameSlice';
+import { createGame, updateGame, makeMove, restartGame } from '../redux/game/gameSlice';
 import '../styles/Game.css';
 import { saveGameDetails } from '../utils/gameUtils';
 import Header from '../components/Header';
 import { AppDispatch } from '../redux/store';
-import { getGamesList as getGameByIdAndUserApi } from '../api';  // Update the path according to your project structure
+// import { getGamesList as getGameByIdAndUserApi } from '../api';  // Update the path according to your project structure
 import { useToken } from '../redux/useToken';
 import { useNavigate } from 'react-router-dom';
+
 
 const Game: React.FC = () => {
   const board = useSelector((state: RootState) => state.game.board);
@@ -22,18 +23,35 @@ const Game: React.FC = () => {
   const token = useToken();
   const navigate = useNavigate();
   const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+
+  
   
 
 
  
+  // const handleCellClick = (x: number, y: number) => {
+  //   if (board[y][x] === 0 && gameStatus === 'playing') {
+  //     dispatch(makeMove({ x, y }));
+  //     if (gameId) {
+  //       dispatch(updateGame({ gameId, gameData: { board, currentPlayer, gameStatus, username, currentUser, moves }}));
+  //     }
+  //   }
+  // }
+
+
   const handleCellClick = (x: number, y: number) => {
-    if (board[y][x] === 0 && gameStatus === 'playing') {
-      dispatch(makeMove({ x, y }));
-      if (gameId) {
-        dispatch(updateGame({ gameId, gameData: { board, currentPlayer, gameStatus, username, currentUser, moves }}));
+    // Using a callback function to make sure we're using the latest state
+    dispatch((dispatch, getState) => {
+      const state = getState();
+      const { board, currentPlayer, gameStatus, username, currentUser, moves } = state.game;
+      if (board[y][x] === 0 && gameStatus === 'playing') {
+        dispatch(makeMove({ x, y }));
+        if (gameId) {
+          dispatch(updateGame({ gameId, gameData: { board, currentPlayer, gameStatus, username, currentUser, moves }}));
+        }
       }
-    }
-  }
+    });
+  };
 
   const handleLeave = async () => {
     try {
@@ -73,7 +91,7 @@ const Game: React.FC = () => {
       if (createGame.fulfilled.match(action)) {
         setGameId(action.payload._id);
       }
-      navigate('/');
+      navigate('/games');
   
       // Reset the game board (optional)
       dispatch(restartGame(currentBoardSize));
@@ -132,17 +150,14 @@ const Game: React.FC = () => {
     const initialBoardSize = currentBoardSize;
     dispatch(restartGame(initialBoardSize));
 
-    const fetchGamesList = async () => {
-      
-        if (token) {
-          const response = await getGameByIdAndUserApi(token);
-          dispatch(updateGamesList(response.data));
-        }
-   
-    };
+    // const fetchGamesList = async () => {
+    //   if (token) {
+    //     const response = await getGameByIdAndUserApi(token);
+    //     dispatch(updateGamesList(response.data));
+    //   }
+    // };
 
-    fetchGamesList();
-  }, [token, dispatch, username, currentBoardSize]);
+ }, [token, dispatch, username, currentBoardSize]);
 
   return (
     <div>
@@ -152,17 +167,19 @@ const Game: React.FC = () => {
         {gameStatus === 'win' && <h2>Winner: {currentPlayer === 1 ? 'Black' : 'White'}</h2>}
         {gameStatus === 'draw' && <h2>Draw!</h2>}
         <div className="board">
-          {board && board.map((row, y) => (
+        {board ? board.map((row, y) => (
             <div className="row" key={y}>
-              {row.map((cell, x) => (
+              {Array.isArray(row) ? row.map((cell, x) => (
                 <div 
                   className={`cell ${cell === 1 ? 'black' : cell === 2 ? 'white' : ''}`} 
                   key={x}
                   onClick={() => handleCellClick(x, y)}
                 />
-              ))}
+              )) : (
+                <div>Error: Row is not an array.</div>
+              )}
             </div>
-          ))}
+          )) : <div>Loading...</div>}
         </div>
         <div className="controls">
           <div className="restart">
@@ -175,6 +192,7 @@ const Game: React.FC = () => {
       </main>
     </div>
   );
+
 }
 
 export default Game;

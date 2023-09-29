@@ -110,7 +110,9 @@ const gameSlice = createSlice({
         state.boardSize = action.payload.boardSize;
         state.currentUser = action.payload.currentUser;
         state.moves = action.payload.moves;
+        state.username = action.payload.username;
       })
+
       .addCase(updateGame.fulfilled, (state, action) => {
         // Assuming action.payload contains the updated game's data
         // Update your state variables here. For example:
@@ -120,6 +122,7 @@ const gameSlice = createSlice({
         state.boardSize = action.payload.boardSize;
         state.currentUser = action.payload.currentUser;
         state.moves = action.payload.moves;
+        state.username = action.payload.username;
       });
   },
 });
