@@ -1,3 +1,12 @@
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import * as api from '../../../src/api'; // Make sure this import is correct
+interface AuthState {
+  isAuthenticated: boolean;
+  currentUser: string | null;
+  token: string | null;
+  error: string | null;
+}
+
 const initialState: AuthState = {
   isAuthenticated: false,
   currentUser: null,
