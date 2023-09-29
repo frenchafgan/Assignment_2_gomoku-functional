@@ -1,46 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';  // <-- Import useParams
-import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
-import { getSingleGame } from '../api';  // Import your API
-import Header from '../components/Header';
-import { useNavigate } from 'react-router-dom';
 import '../styles/GameLog.css';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';  // <-- Add useParams
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';  // <-- Assume you have this file for Redux store
+import { getSingleGame } from '../api';  // <-- Add this import for API function
+import Header from '../components/Header';
 
 interface Move {
-    x: number;
-    y: number;
-    color: string;
-    player: number;
+  x: number;
+  y: number;
+  color: string;
+  player: number;
 }
 
 interface GameDetails {
-    id: string;
-    boardSize: number;
-    result: string;
-    moves: Move[];
+  id: number;
+  boardSize: number;
+  result: string;
+  moves: Move[];
 }
 
-
 const GameLog: React.FC = () => {
-    const [gameDetails, setGameDetails] = useState<GameDetails | null>(null);
-    const navigate = useNavigate();
-    const currentUser = useSelector((state: RootState) => state.auth.currentUser);
-    const token = localStorage.getItem('token');  // Get the token
-    const { id } = useParams();  // <-- Get the game ID from the URL
-    useEffect(() => {
-        if (id && currentUser && token) {
-          getSingleGame(id)  // <-- Use the game ID here
-            .then(response => {
-              if (response.data.username === currentUser) {
-                setGameDetails(response.data);
-              }
-            })
-            .catch(error => {
-              console.error("Error fetching game:", error);
-            });
-        }
-      }, [id, currentUser, token]);  // Dependency array includes 'id'
+  const [gameDetails, setGameDetails] = useState<GameDetails | null>(null);  // <-- Initialize to null
+  const navigate = useNavigate();
+  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+  const token = localStorage.getItem('token');  // Get the token
+  const { id } = useParams();  // <-- Get the game ID from the URL
+  
+
+  useEffect(() => {
+    if (id && currentUser && token) {
+      getSingleGame(id)  // <-- Fetch single game details based on id
+        .then(response => {
+          const gameData = response.data;
+          if (gameData) {
+            setGameDetails(gameData);  // <-- Set game details
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching game:", error);
+        });
+    }
+  }, [id, currentUser, token]);
       
     const renderCell = (x: number, y: number, cellColor: string) => {
         if (!gameDetails) {
