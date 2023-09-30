@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { store } from './redux/store';
 // import userSlice from './redux/user/userSlice';
+
 axios.defaults.withCredentials = true;
 const api = axios.create({
   baseURL: 'https://gomokubackend-c2726533f465.herokuapp.com/', // Replace with your backend URL
