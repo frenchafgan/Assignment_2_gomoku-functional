@@ -5,6 +5,7 @@ import { store } from './redux/store';
 axios.defaults.withCredentials = true;
 const api = axios.create({
   baseURL: 'https://gomokubackend-c2726533f465.herokuapp.com/', // Replace with your backend URL
+  withCredentials: true,
 });
 // Function to get token from reduxstore
 export const getToken = () => {

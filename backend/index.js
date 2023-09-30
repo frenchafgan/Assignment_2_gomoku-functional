@@ -17,10 +17,12 @@ const corsOptions = {
   origin: 'https://gomoku-9bf979a7bc44.herokuapp.com/',
   credentials: true,
 };
+app.use(cors());
+app.options('*', cors());
 
 // Middleware Setup
-app.use(cors(corsOptions));
-app.use(express.json()); // Middleware for parsing JSON
+// Middleware for parsing JSON
+app.use(express.json());
 
 // MongoDB Setup
 const MONGO_DB_URL = process.env.MONGO_DB_URL;
