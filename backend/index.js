@@ -17,8 +17,7 @@ const corsOptions = {
   origin: 'https://gomoku-9bf979a7bc44.herokuapp.com/',
   credentials: true,
 };
-app.use(cors());
-app.options('*', cors());
+app.use(cors(corsOptions));
 
 // Middleware Setup
 // Middleware for parsing JSON
